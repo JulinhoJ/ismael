@@ -1,1027 +1,490 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Julia - Ajude com Amor</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Montserrat", sans-serif;
-      }
-
-      body {
-        background-color: #f9f9f9;
-        color: #2a2a2a;
-        line-height: 1.6;
-      }
-
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #eee;
-      }
-
-      .logo {
-        font-size: 24px;
-        font-weight: bold;
-        color: #365899;
-      }
-
-      .main-content {
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        margin-bottom: 20px;
-      }
-
-      .image-container {
-        position: relative;
-      }
-
-      .image-container img {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-
-      .image-container .heart-icon {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        color: #cf2e2e;
-        font-size: 24px;
-      }
-
-      .info-bar {
-        display: flex;
-        justify-content: space-between;
-        padding: 15px;
-        background-color: #f9f9f9;
-        border-bottom: 1px solid #eee;
-      }
-
-      .hearts-count {
-        display: flex;
-        align-items: center;
-        color: #444;
-        font-size: 14px;
-      }
-
-      .progress-container {
-        padding: 20px;
-        border-bottom: 1px solid #eee;
-      }
-
-      .progress-bar {
-        width: 100%;
-        height: 20px;
-        background-color: #e0e0e0;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-bottom: 10px;
-      }
-
-      .progress {
-        width: 68%;
-        height: 100%;
-        background-color: #6ec1e4;
-        border-radius: 10px;
-        transition: width 1.5s ease-in-out;
-      }
-
-      .progress-info {
-        display: flex;
-        justify-content: space-between;
-        font-size: 14px;
-      }
-
-      .tab-container {
-        display: flex;
-        border-bottom: 1px solid #eee;
-      }
-
-      .tab {
-        padding: 10px 20px;
-        cursor: pointer;
-        color: #666;
-        font-weight: 600;
-        font-size: 14px;
-      }
-
-      .tab.active {
-        color: #365899;
-        border-bottom: 2px solid #365899;
-      }
-
-      .content {
-        padding: 20px;
-      }
-
-      .date {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 15px;
-      }
-
-      .about-text {
-        margin-bottom: 20px;
-        font-size: 15px;
-        line-height: 1.6;
-      }
-
-      .highlight {
-        font-weight: bold;
-        color: #333;
-      }
-
-      .donate-button {
-        display: block;
-        width: 100%;
-        padding: 15px;
-        background-color: #6ec1e4;
-        color: white;
-        text-align: center;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        text-decoration: none;
-        margin: 20px 0;
-        transition: background-color 0.3s;
-      }
-
-      .donate-button:hover {
-        background-color: #5aa8c7;
-      }
-
-      .sticky-footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: white;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-        padding: 15px;
-        display: none;
-      }
-
-      @media (max-width: 768px) {
-        .sticky-footer {
-          display: block;
-        }
-
-        .container {
-          padding-bottom: 80px;
-        }
-      }
-
-      /* Modal Styles */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        overflow: auto;
-      }
-
-      .modal-content {
-        background-color: #fff;
-        margin: 10% auto;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        width: 90%;
-        max-width: 600px;
-        position: relative;
-      }
-
-      .close-modal {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        color: #aaa;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-
-      .close-modal:hover {
-        color: #333;
-      }
-
-      .modal-title {
-        font-size: 22px;
-        margin-bottom: 20px;
-        color: #365899;
-        text-align: center;
-        font-weight: 600;
-      }
-
-      .modal-subtitle {
-        font-size: 16px;
-        color: #666;
-        text-align: center;
-        margin-bottom: 30px;
-      }
-
-      .donation-options {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-        margin-bottom: 25px;
-      }
-
-      @media (max-width: 600px) {
-        .donation-options {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-
-      .donation-option {
-        padding: 18px 12px;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s;
-      }
-
-      .donation-option:hover {
-        border-color: #6ec1e4;
-        background-color: #f5f9fb;
-      }
-
-      .donation-option.selected {
-        border-color: #6ec1e4;
-        background-color: #f5f9fb;
-      }
-
-      .donation-value {
-        font-size: 20px;
-        font-weight: bold;
-        color: #333;
-      }
-
-      .donation-description {
-        font-size: 13px;
-        color: #666;
-        margin-top: 5px;
-      }
-
-      .custom-value {
-        margin-top: 25px;
-        padding: 0 5px;
-      }
-
-      .custom-value-label {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 10px;
-        color: #333;
-      }
-
-      .custom-value input {
-        width: 100%;
-        padding: 15px;
-        border: 2px solid #e0e0e0;
-        border-radius: 5px;
-        font-size: 16px;
-        margin-bottom: 25px;
-      }
-
-      .custom-value input:focus {
-        border-color: #6ec1e4;
-        outline: none;
-      }
-
-      .proceed-button {
-        display: block;
-        width: 100%;
-        padding: 18px;
-        background-color: #6ec1e4;
-        color: white;
-        text-align: center;
-        border: none;
-        border-radius: 5px;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background-color 0.3s;
-      }
-
-      .proceed-button:hover {
-        background-color: #5aa8c7;
-      }
-
-      .modal-footer {
-        margin-top: 20px;
-        text-align: center;
-        font-size: 13px;
-        color: #666;
-      }
-
-      .modal-footer img {
-        max-height: 30px;
-        margin: 10px 5px 0;
-      }
-
-      /* Facebook Comments Styles */
-      .facebook-comments {
-        margin-top: 40px;
-        border-top: 1px solid #e0e0e0;
-        padding-top: 20px;
-      }
-
-      .comments-title {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 10px;
-        color: #444;
-      }
-
-      .comment-divider {
-        height: 1px;
-        background-color: #e0e0e0;
-        margin-bottom: 20px;
-      }
-
-      .comment {
-        margin-bottom: 20px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #f0f0f0;
-      }
-
-      .comment-content {
-        display: flex;
-        margin-bottom: 8px;
-      }
-
-      .comment-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        overflow: hidden;
-        margin-right: 10px;
-        flex-shrink: 0;
-      }
-
-      .comment-avatar img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .comment-details {
-        flex-grow: 1;
-      }
-
-      .comment-name {
-        font-weight: bold;
-        color: #365899;
-        font-size: 14px;
-        margin-bottom: 3px;
-      }
-
-      .comment-text {
-        font-size: 14px;
-        color: #333;
-        line-height: 1.4;
-      }
-
-      .comment-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-left: 60px;
-      }
-
-      .comment-actions {
-        font-size: 12px;
-        color: #666;
-      }
-
-      .comment-likes {
-        display: flex;
-        align-items: center;
-      }
-
-      .comment-likes img.reaction-icon {
-        width: 20px;
-        height: 20px;
-        margin-right: 3px;
-      }
-
-      .comment-likes span {
-        font-size: 13px;
-        color: #666;
-        margin-left: 3px;
-      }
-    </style>
+    <link rel="icon" href="images/favi.webp" type="image/png" />
+    <title>Ajude Ismael</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/glide.core.min.css" />
+    <link rel="stylesheet" href="css/glide.theme.min.css" />
+    <link rel="stylesheet" href="css/modal.css" />
+    <script src="js/qrcode.min.js"></script>
   </head>
+
   <body>
-    <div class="container">
-      <header>
-        <div class="logo">Ajude com Amor</div>
-      </header>
+    <header>
+      <div class="container">
+        <div class="logo">
+          <a>
+            <img src="images/logo.webp" />
+          </a>
+        </div>
+      </div>
+    </header>
 
-      <div class="main-content">
-        <div class="image-container">
-          <img src="images/ismael.webp" alt="Julia" />
-          <div class="heart-icon">❤️</div>
+    <div class="post">
+      <h3>
+        A Doença do Rato fez meu filho perder o braço. Agora ele só pensa em
+        morrer. Ajude o Ismael.
+      </h3>
+      <img src="images/image1.webp" />
+      <div class="image-container">
+        <div class="likes-container">
+          <img src="images/boll.png" alt="Corações" />
+          <!-- Mini Imagem que você carregou -->
+          <span>117 corações recebidos ❤️</span>
+        </div>
+      </div>
+      <a href="#button-section" class="btn-anchor">
+        <button class="post-button3">DOAR AGORA</button>
+      </a>
+      <p><strong>O braço do meu filho apodreceu em quinze dias.</strong></p>
+
+      <p>
+        Foi mais uma das tragédias causadas pelas <strong>enchentes</strong> que
+        devastaram o <strong>Rio Grande do Sul</strong> em abril de 2024 - mas
+        dessa, <strong>ninguém fez reportagem</strong>.
+      </p>
+
+      <p>
+        <strong>Meu nome é Sandra</strong> e sou mãe do <strong>Ismael</strong>,
+        esse garotinho lindo de <strong>7 anos</strong>.
+      </p>
+
+      <p>
+        Ontem, enquanto arrumava a cama dele, encontrei um
+        <strong>desenho escondido</strong> embaixo do travesseiro.
+      </p>
+
+      <p>
+        Era ele mesmo, rabiscado com a <strong>mão esquerda</strong>. No
+        desenho, ele tinha <strong>dois braços</strong>.
+      </p>
+
+      <p>
+        "<strong
+          >Mãe... será que um dia eu vou poder abraçar alguém sem ter
+          vergonha?</strong
+        >"
+      </p>
+
+      <p>
+        São essas perguntas que me fazem
+        <strong>chorar escondida no banheiro</strong> toda noite.
+      </p>
+
+      <p>
+        A enchente levou não apenas a nossa casa em
+        <strong>São Sebastião do Caí - RS</strong>, mas também algo que
+        <strong>dinheiro nenhum pode comprar</strong>: o
+        <strong>braço do meu filho</strong>.
+      </p>
+
+      <p>
+        Tudo começou num <strong>corte pequeno</strong>, quase insignificante.
+      </p>
+
+      <p>
+        Na correria pra fugir da <strong>água que invadia nossa casa</strong>, o
+        Ismael esbarrou numa <strong>cerca submersa</strong>.
+      </p>
+
+      <p>
+        Com tanta gente <strong>gritando por socorro</strong>, tantos vizinhos
+        perdendo tudo, aquele
+        <strong>cortezinho pareceu o menor dos problemas</strong>.
+      </p>
+
+      <p>
+        Eu vi na hora e limpei, fiz um <strong>curativo improvisado</strong> e
+        seguimos em frente.
+      </p>
+
+      <p>
+        O <strong>posto de saúde</strong> tava <strong>debaixo d'água</strong>.
+      </p>
+
+      <p>
+        O <strong>hospital mais próximo</strong>, a <strong>40 km</strong>,
+        transbordava de <strong>desabrigados</strong>.
+      </p>
+
+      <p>
+        Não tínhamos <strong>carro</strong>. Não tínhamos
+        <strong>ônibus</strong>. Não tínhamos nada além da
+        <strong>roupa do corpo</strong> e da certeza de que aquele corte era o
+        menor dos problemas.
+      </p>
+
+      <p>No <strong>segundo dia</strong>, veio a <strong>febre</strong>.</p>
+
+      <p>
+        "<strong>É só um resfriado da chuva</strong>", eu disse pra mim mesma.
+      </p>
+
+      <p>
+        Dei <strong>dipirona</strong> e continuei acreditando que ele ia
+        melhorar.
+      </p>
+
+      <p>
+        No <strong>quarto dia</strong>, o braço dele <strong>inchou</strong>.
+      </p>
+
+      <p>
+        No <strong>sexto dia</strong>, quando finalmente conseguimos carona até
+        o <strong>terceiro hospital</strong> que tentamos, o cheiro já era de
+        <strong>morte</strong>.
+      </p>
+
+      <p>"<strong>Por que não trouxe antes?</strong>", perguntou a médica.</p>
+
+      <p>Como explicar que <strong>andamos quilômetros na lama</strong>?</p>
+
+      <p>
+        Que <strong>imploramos por ajuda</strong> em dois hospitais lotados?
+      </p>
+
+      <p>
+        Que passei <strong>noites em claro</strong> vendo meu filho
+        <strong>delirar de febre</strong> num
+        <strong>colchão emprestado</strong>?
+      </p>
+
+      <p>
+        O diagnóstico veio como uma <strong>sentença</strong>:
+        <strong>leptospirose</strong>, contraída através do corte.
+      </p>
+
+      <p>
+        A <strong>bactéria da água suja</strong> provocou algo chamado "<strong
+          >fasceíte necrosante</strong
+        >". Em palavras simples: o
+        <strong>braço do meu filho estava morrendo</strong>.
+      </p>
+      <img src="images/laudo.webp" style="width: 90%; height: auto" />
+      <p>
+        <strong>Vi a morte subir pelo braço dele</strong> como uma
+        <strong>linha escura</strong>. Primeiro ficou <strong>roxo</strong>,
+        depois <strong>preto</strong>.
+      </p>
+
+      <p>
+        O <strong>cheiro</strong>... meu Deus, o cheiro era como
+        <strong>carne podre</strong> num açougue abandonado.
+      </p>
+
+      <p>
+        <strong>Doze cirurgias</strong> em <strong>quinze dias</strong>. Os
+        médicos <strong>cortavam um pedaço</strong>, esperavam,
+        <strong>cortavam mais</strong>.
+      </p>
+
+      <p>
+        A <strong>infecção não parava</strong>. Até que o
+        <strong>Dr. Paulo</strong> entrou no quarto <strong>chorando</strong>:
+      </p>
+
+      <p>
+        "<strong>Sandra, se não amputarmos agora</strong>, a infecção vai se
+        espalhar. <strong>Seu filho tem 24 horas de vida</strong>."
+      </p>
+
+      <p>
+        <strong>Assinei a autorização</strong> com a mesma mão que antes fazia
+        <strong>cafuné</strong> naquele braço que agora precisava ser
+        <strong>cortado</strong>.
+      </p>
+
+      <p>
+        Começamos nossa <strong>busca por ajuda</strong> em todos os lugares
+        possíveis.
+      </p>
+
+      <p>
+        O <strong>SUS oferece próteses básicas</strong>, mas são
+        <strong>rígidas</strong>, sem <strong>movimentos naturais</strong> -
+        como um pedaço de <strong>plástico preso ao corpo</strong>.
+      </p>
+
+      <p>
+        Mas mesmo essas próteses eu
+        <strong>solicitei e não recebi resposta</strong>.
+      </p>
+
+      <p>
+        A <strong>Secretaria de Saúde</strong> tem uma
+        <strong>lista de espera de dois anos</strong>.
+      </p>
+
+      <p>Foi quando descobrimos a <strong>Bebionic Child</strong>.</p>
+
+      <p>
+        A <strong>única prótese</strong> que devolve os
+        <strong>movimentos precisos</strong> para uma criança.
+      </p>
+
+      <p>
+        É a mesma <strong>tecnologia</strong> usada por
+        <strong>cirurgiões</strong> pra operar à distância, adaptada para
+        devolver a <strong>independência</strong> a crianças como o Ismael.
+      </p>
+      <img src="images/image2.webp" style="width: 90%; height: auto" />
+      <p><strong>Mas cada dia que passa é um dia perdido.</strong></p>
+
+      <p>A médica explicou:</p>
+
+      <p>
+        "<strong>Existe uma 'janela de oportunidade'</strong> para o cérebro se
+        adaptar à prótese."
+      </p>
+
+      <p>
+        "<strong>Se esperarmos muito</strong>, o cérebro do Ismael vai
+        '<strong>desaprender</strong>' os movimentos do braço - e ele pode
+        <strong>nunca mais conseguir usar</strong> uma prótese adequadamente."
+      </p>
+
+      <p>
+        O <strong>Ismael de antes</strong> desenhava
+        <strong>planetas e foguetes</strong>. Sonhava em ser médico "<strong
+          >pra consertar as pessoas machucadas</strong
+        >, igual o doutor consertou a vovó".
+      </p>
+
+      <p>
+        Agora, ele <strong>se esconde pra comer no banheiro</strong> da escola.
+        Os colegas chamam ele de "<strong>aleijado</strong>". Semana passada,
+        encontrei um <strong>bilhete no caderno</strong> dele:
+      </p>
+
+      <p>"<strong>Queria que a água tivesse me levado junto</strong>".</p>
+
+      <p><strong>Meu filho tem 7 anos e já pensa em morrer.</strong></p>
+
+      <p>
+        A prótese <strong>Bebionic Child</strong> custa
+        <strong>R$ 87.000</strong>. Para outros, é um número. Pra nós, é a
+        diferença entre deixar uma criança
+        <strong>sobreviver ou viver de verdade</strong>.
+      </p>
+
+      <p>Com ela, Ismael poderia:</p>
+
+      <p>
+        <strong>● Fazer sua própria higiene no banheiro</strong> (imagina a
+        <strong>humilhação</strong> de um menino de 7 anos precisar da mãe para
+        isso).
+      </p>
+
+      <p>
+        <strong>● Se secar depois do banho</strong> (todo dia ele sai
+        <strong>pingando do chuveiro</strong>, esperando que eu o seque como um
+        <strong>bebê</strong>).
+      </p>
+
+      <p>
+        <strong>● Trocar a própria roupa íntima</strong> sem precisar de ajuda
+        (ele já me perguntou se vai precisar de mim para isso
+        <strong>para sempre</strong>).
+      </p>
+
+      <p>
+        <strong>● Fechar o zíper da calça</strong> sozinho no banheiro da escola
+        (por isso ele só usa <strong>calça de elástico</strong> agora).
+      </p>
+
+      <p>
+        <strong>Já conseguimos R$ 23.450</strong> com a ajuda de
+        <strong>amigos, familiares</strong> e
+        <strong>pessoas de bom coração</strong>.
+      </p>
+
+      <p>
+        <strong>Faltam R$ 63.550</strong>. E o
+        <strong>tempo está correndo contra nós</strong>.
+      </p>
+
+      <p>
+        A médica explicou que quanto mais esperamos, mais o
+        <strong>cérebro dele "esquece"</strong> como é ter
+        <strong>dois braços</strong>.
+      </p>
+
+      <p>
+        Os <strong>músculos do ombro</strong> podem <strong>atrofiar</strong>. O
+        Ismael pode <strong>perder pra sempre</strong> a chance de usar uma
+        <strong>prótese</strong>.
+      </p>
+
+      <p>
+        Me <strong>aperta o coração</strong> quando ele diz que
+        <strong>preferia estar morto</strong>.
+      </p>
+
+      <p>
+        Então por favor, se você pode ajudar, <strong>clique abaixo</strong> e
+        faça a sua <strong>doação</strong>.
+      </p>
+      <a href="#button-section" class="btn-anchor">
+        <button class="post-button3">DOAR AGORA</button>
+      </a>
+      <p>
+        Mas independente se você pode doar <strong>muito ou pouco</strong>,
+        <strong>muito obrigada</strong>.
+      </p>
+
+      <p>
+        <strong>Deus vê sua bondade</strong>, e você será
+        <strong>abençoado</strong> por isso.
+      </p>
+
+      <p>
+        <strong>Cada segundo conta</strong>. <strong>Cada real conta</strong>.
+        <strong>Cada compartilhamento conta</strong>.
+      </p>
+
+      <p>
+        Se você pode doar, por favor, <strong>faça isso agora</strong> clicando
+        abaixo.
+      </p>
+      <a href="#button-section" class="btn-anchor">
+        <button class="post-button3">DOAR AGORA</button>
+      </a>
+      <p><strong>Você receberá:</strong></p>
+
+      <p><strong>● Atualizações semanais</strong> da nossa jornada</p>
+      <p><strong>● Vídeo do primeiro abraço</strong> dele com a prótese</p>
+      <p><strong>● Seu nome na nossa lista de anjos</strong> (se desejar)</p>
+
+      <p>
+        <strong>Compartilhe nossa história</strong>. Cada compartilhamento é uma
+        <strong>nova chance</strong> de devolver a infância ao meu filho.
+      </p>
+
+      <p><strong>Que Deus abençoe você e a sua família</strong>.</p>
+
+      <p><strong>Att: Sandra, Mãe do Ismael</strong>.</p>
+
+      <div id="button-section">
+        <div class="progress-content">
+          <div class="progress-text">
+            <h4>Arrecadado</h4>
+            <div class="progress-values">
+              <p>R$ 23.450,41</p>
+              <p>R$ 87.000,00</p>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 27%">
+              <strong>27%</strong>
+            </div>
+          </div>
         </div>
 
-        <div class="info-bar">
-          <div class="hearts-count">783 corações recebidos 💚</div>
+        <h4>Clique no valor que deseja doar</h4>
+        <div class="buttons-section">
+          <div class="buttons-section1">
+            <a href="#">
+              <button class="post-button2">R$ 30</button>
+            </a>
+
+            <a href="#">
+              <button class="post-button2">R$ 50</button>
+            </a>
+
+            <a href="#">
+              <button class="post-button2">R$ 80</button>
+            </a>
+
+            <a href="#">
+              <button class="post-button2">R$ 150</button>
+            </a>
+
+            <a href="#">
+              <button class="post-button2">R$ 250</button>
+            </a>
+
+            <a href="#">
+              <button class="post-button2">R$ 350</button>
+            </a>
+
+            <a href="#">
+              <button class="post-button2">R$ 450</button>
+            </a>
+            <a href="#">
+              <button class="post-button2">R$ 600</button>
+            </a>
+            <a href="#">
+              <button class="post-button2">R$ 900</button>
+            </a>
+          </div>
+          <div class="buttons-section1">
+            <a href="#">
+              <button class="post-button2">R$ 40</button>
+            </a>
+
+            <a href="#">
+              <button class="post-button2">R$ 70</button>
+            </a>
+
+            <a href="#">
+              <button class="post-button2">R$ 100</button>
+            </a>
+
+            <a href="#">
+              <button class="post-button2">R$ 200</button>
+            </a>
+            <a href="#">
+              <button class="post-button2">R$ 300</button>
+            </a>
+
+            <a href="#">
+              <button class="post-button2">R$ 400</button>
+            </a>
+
+            <a href="#">
+              <button class="post-button2">R$ 500</button>
+            </a>
+            <a href="#">
+              <button class="post-button2">R$ 700</button>
+            </a>
+            <a href="#">
+              <button class="post-button2">R$ 1000</button>
+            </a>
+          </div>
         </div>
-
-        <div class="progress-container">
-          <div class="progress-bar">
-            <div class="progress"></div>
-          </div>
-          <div class="progress-info">
-            <div>
-              <div>Arrecadado:</div>
-              <div><strong>R$ 164.992,10</strong></div>
-            </div>
-            <div>
-              <div>Meta</div>
-              <div><strong>R$ 300.000,00</strong></div>
+          <div class="sc-jXbUNg gNPJrz">
+            <div class="sc-jXbUNg dHwLb">
+              <div class="sc-jXbUNg jbBvcf"></div>
+              <div class="sc-jXbUNg dTrGCo sc-gRtvSG fpURXW"></div>
             </div>
           </div>
-          <div style="text-align: center; margin-top: 10px; color: #6ec1e4">
-            A Doença do Rato fez meu filho perder o braço. Agora ele só pensa em morrer. Ajude o Ismael.
-          </div>
-        </div>
 
-        <div class="tab-container">
-          <div class="tab active">Sobre</div>
-          <div class="tab">Novidades</div>
-          <div class="tab">Quem ajudou</div>
-        </div>
-
-        <div class="content">
-          <div class="date"><b>Vaquinha criada em: </b>27/03/2025</div>
-
-          <div class="about-text">
-            O braço do meu filho apodreceu em quinze dias.
-
-Foi mais uma das tragédias causadas pelas enchentes que devastaram o Rio Grande do Sul em abril de 2024 - mas dessa, ninguém fez reportagem.
-
-Meu nome é Sandra e sou mãe do Ismael, esse garotinho lindo de 7 anos.
-
-            <p>
-              Ontem, enquanto arrumava a cama dele, encontrei um desenho escondido embaixo do travesseiro.
-
-Era ele mesmo, rabiscado com a mão esquerda. No desenho, ele tinha dois braços.
-
-"Mãe... será que um dia eu vou poder abraçar alguém sem ter vergonha?"
-
-São essas perguntas que me fazem chorar escondida no banheiro toda noite.
-
-A enchente levou não apenas a nossa casa em São Sebastião do Caí - RS, mas também algo que dinheiro nenhum pode comprar: o braço do meu filho.
-            </p>
-
-            <p>
-              Tudo começou num corte pequeno, quase insignificante.
-
-Na correria pra fugir da água que invadia nossa casa, o Ismael esbarrou numa cerca submersa.
-
-Com tanta gente gritando por socorro, tantos vizinhos perdendo tudo, aquele cortezinho pareceu o menor dos problemas.
-
-Eu vi na hora e limpei, fiz um curativo improvisado e seguimos em frente.
-            </p>
-          </div>
-
-          <button class="donate-button" id="openDonateModal">
-            QUERO AJUDAR
-          </button>
-
-          <div class="about-text">
-            <p>
-              <strong
-                >💔 Para sobreviver, ele depende 100% da nossa ajuda,</strong
-              >
-              O posto de saúde tava debaixo d'água.
-
-O hospital mais próximo, a 40 km, transbordava de desabrigados.
-
-Não tínhamos carro. Não tínhamos ônibus. Não tínhamos nada além da roupa do corpo e da certeza de que aquele corte era o menor dos problemas.
-
-No segundo dia, veio a febre.
-
-"É só um resfriado da chuva", eu disse pra mim mesma.
-
-Dei dipirona e continuei acreditando que ele ia melhorar.
-            </p>
-
-            <p>
-              No quarto dia, o braço dele inchou.
-
-No sexto dia, quando finalmente conseguimos carona até o terceiro hospital que tentamos, o cheiro já era de morte.
-
-"Por que não trouxe antes?", perguntou a médica.
-
-Como explicar que andamos quilômetros na lama?
-
-Que imploramos por ajuda em dois hospitais lotados?
-
-Que passei noites em claro vendo meu filho delirar de febre num colchão emprestado?
-            </p>
-
-            <p>
-              💔 O diagnóstico veio como uma sentença: leptospirose, contraída através do corte.
-            </p>
-
-            <p>
-              A bactéria da água suja provocou algo chamado "fasceíte necrosante". Em palavras simples: o braço do meu filho estava morrendo.
-            </p>
-
-            <p>
-              Vi a morte subir pelo braço dele como uma linha escura. Primeiro ficou roxo, depois preto.
-
-O cheiro... meu Deus, o cheiro era como carne podre num açougue abandonado.
-            </p>
-
-            <p>
-              Doze cirurgias em quinze dias. Os médicos cortavam um pedaço, esperavam, cortavam mais.
-
-A infecção não parava. Até que o Dr. Paulo entrou no quarto chorando:
-
-"Sandra, se não amputarmos agora, a infecção vai se espalhar. Seu filho tem 24 horas de vida."
-            </p>
-
-            <p>
-              👉
-              <strong
-                >Clique no botão abaixo e ajude o Ismael a continuar
-                lutando.</strong
-              >
-            </p>
-          </div>
-
-          <button class="donate-button" id="openDonateModal2">
-            DOE E CONCORRA
-          </button>
-
-          <!-- Instruções de doação -->
-          <div class="about-text" style="margin-top: 30px">
-            <p>Ajudar o Ismael é simples:</p>
-            <p>
-              ✔️ Clique no botão <strong>"Doe e Concorra"</strong>.<br />
-              ✔️ Escolha o valor que deseja doar.<br />
-              ✔️ Você será direcionado para a próxima etapa, onde poderá efetuar
-              a doação via PIX.
-            </p>
-            <p>
-              Cada doação, por menor que seja, faz uma grande diferença. Todo o
-              valor arrecadado será usado para o tratamento e os cuidados
-              diários do Ismael.
-            </p>
-          </div>
-
-          <!-- Seção de comentários do Facebook -->
-          <div class="facebook-comments">
-            <h3 class="comments-title">11 Comentários recentes</h3>
-            <div class="comment-divider"></div>
-
-            <!-- Comentário 1 -->
-            <div class="comment">
-              <div class="comment-content">
-                <div class="comment-avatar">
-                  <img src="images/3.jpg" alt="Ana Clara" />
-                </div>
-                <div class="comment-details">
-                  <div class="comment-name">Ana Clara</div>
-                  <div class="comment-text">
-                    Eu ajudei com 150 reais para ajudar, dá dó no coração ver
-                    tanta dor que essas pessoas passam
-                  </div>
-                </div>
-              </div>
-              <div class="comment-footer">
-                <div class="comment-actions">Responder · Curtir · 32 min</div>
-                <div class="comment-likes">
-                  <img
-                    src="images/facebook-like-icon-png-10-removebg-preview.png"
-                    alt="Love"
-                    class="reaction-icon"
-                  />
-                  <img
-                    src="images/65414-button-computer-facebook-like-icons-free-clipart-hq-1.png"
-                    alt="Like"
-                    class="reaction-icon"
-                  />
-                  <span>42</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Comentário 2 -->
-            <div class="comment">
-              <div class="comment-content">
-                <div class="comment-avatar">
-                  <img src="images/8.jpg" alt="Letícia Maria" />
-                </div>
-                <div class="comment-details">
-                  <div class="comment-name">Letícia Maria</div>
-                  <div class="comment-text">
-                    Compartilhei com todas minha familia todas ajudaram!!
-                  </div>
-                </div>
-              </div>
-              <div class="comment-footer">
-                <div class="comment-actions">Responder · Curtir · 14 min</div>
-                <div class="comment-likes">
-                  <img
-                    src="images/facebook-like-icon-png-10-removebg-preview.png"
-                    alt="Love"
-                    class="reaction-icon"
-                  />
-                  <img
-                    src="images/65414-button-computer-facebook-like-icons-free-clipart-hq-1.png"
-                    alt="Like"
-                    class="reaction-icon"
-                  />
-                  <span>44</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Comentário 3 -->
-            <div class="comment">
-              <div class="comment-content">
-                <div class="comment-avatar">
-                  <img src="images/7.jpg" alt="Gabriela Oliveira" />
-                </div>
-                <div class="comment-details">
-                  <div class="comment-name">Gabriela Oliveira</div>
-                  <div class="comment-text">
-                    Aqui eu ajudei com 50 reias queria ter doar um pouco mais.
-                  </div>
-                </div>
-              </div>
-              <div class="comment-footer">
-                <div class="comment-actions">Responder · Curtir · 6 min</div>
-                <div class="comment-likes">
-                  <img
-                    src="images/facebook-like-icon-png-10-removebg-preview.png"
-                    alt="Love"
-                    class="reaction-icon"
-                  />
-                  <img
-                    src="images/65414-button-computer-facebook-like-icons-free-clipart-hq-1.png"
-                    alt="Like"
-                    class="reaction-icon"
-                  />
-                  <span>16</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Comentário 4 -->
-            <div class="comment">
-              <div class="comment-content">
-                <div class="comment-avatar">
-                  <img src="images/8.jpg" alt="Letícia Maria" />
-                </div>
-                <div class="comment-details">
-                  <div class="comment-name">Letícia Maria</div>
-                  <div class="comment-text">
-                    Acho que se todo mundo doar um pouco ajudará muito
-                  </div>
-                </div>
-              </div>
-              <div class="comment-footer">
-                <div class="comment-actions">Responder · Curtir · 2 min</div>
-                <div class="comment-likes">
-                  <img
-                    src="images/facebook-like-icon-png-10-removebg-preview.png"
-                    alt="Love"
-                    class="reaction-icon"
-                  />
-                  <img
-                    src="images/65414-button-computer-facebook-like-icons-free-clipart-hq-1.png"
-                    alt="Like"
-                    class="reaction-icon"
-                  />
-                  <span>09</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Comentário 5 -->
-            <div class="comment">
-              <div class="comment-content">
-                <div class="comment-avatar">
-                  <img src="images/6.jpg" alt="Carolina Santos" />
-                </div>
-                <div class="comment-details">
-                  <div class="comment-name">Carolina Santos</div>
-                  <div class="comment-text">
-                    DEUS ABENÇÕE ESSA CRIANÇA FIZ MINHA COLABORAÇÃO TAMBÉM.
-                  </div>
-                </div>
-              </div>
-              <div class="comment-footer">
-                <div class="comment-actions">Responder · Curtir · 21 min</div>
-                <div class="comment-likes">
-                  <img
-                    src="images/facebook-like-icon-png-10-removebg-preview.png"
-                    alt="Love"
-                    class="reaction-icon"
-                  />
-                  <img
-                    src="images/65414-button-computer-facebook-like-icons-free-clipart-hq-1.png"
-                    alt="Like"
-                    class="reaction-icon"
-                  />
-                  <span>51</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Comentário 6 -->
-            <div class="comment">
-              <div class="comment-content">
-                <div class="comment-avatar">
-                  <img src="images/4.jpg" alt="Fernanda Oliveira" />
-                </div>
-                <div class="comment-details">
-                  <div class="comment-name">Fernanda Oliveira</div>
-                  <div class="comment-text">
-                    Amém irmã também ajudei com 75 reais para essa familia.
-                  </div>
-                </div>
-              </div>
-              <div class="comment-footer">
-                <div class="comment-actions">Responder · Curtir · 11 min</div>
-                <div class="comment-likes">
-                  <img
-                    src="images/facebook-like-icon-png-10-removebg-preview.png"
-                    alt="Love"
-                    class="reaction-icon"
-                  />
-                  <img
-                    src="images/65414-button-computer-facebook-like-icons-free-clipart-hq-1.png"
-                    alt="Like"
-                    class="reaction-icon"
-                  />
-                  <span>58</span>
-                </div>
-              </div>
+          <div class="button-pix">
+            <div class="texto" id="1">
             </div>
           </div>
         </div>
       </div>
+      <footer>
+        <div class="footer-container">
+          <div class="footer-section logo-section">
+            <a>
+              <img src="images/logo.webp" />
+            </a>
+          </div>
+
+          <div class="footer-bottom">
+            <p>2025 - Todos direitos reservados</p>
+          </div>
+        </div>
+      </footer>
+
+      <script data-cfasync="false" src="js/email-decode.min.js"></script>
+      <script src="js/script.js"></script>
+      <script src="js/pix.js"></script>
     </div>
-
-    <div class="sticky-footer">
-      <div class="progress-bar">
-        <div class="progress"></div>
-      </div>
-      <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 10px;
-        "
-      >
-        <div>
-          <div>Arrecadado:</div>
-          <div><strong>R$ 164.992,10</strong></div>
-        </div>
-        <div>
-          <div>Meta</div>
-          <div><strong>R$ 300.000,00</strong></div>
-        </div>
-      </div>
-      <button class="donate-button" id="openDonateModal3" style="margin: 0">
-        QUERO AJUDAR
-      </button>
-    </div>
-
-    <!-- Modal de Doação -->
-    <div id="donationModal" class="modal">
-      <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <h2 class="modal-title">Escolha um valor para doar</h2>
-        <p class="modal-subtitle">
-          Você está ajudando o tratamento de Ismael. Sua contribuição é muito
-          importante!
-        </p>
-
-        <div class="donation-options">
-          <div class="donation-option" data-value="30">
-            <div class="donation-value">R$ 30</div>
-          </div>
-          <div class="donation-option" data-value="40">
-            <div class="donation-value">R$ 40</div>
-          </div>
-          <div class="donation-option" data-value="50">
-            <div class="donation-value">R$ 50</div>
-          </div>
-          <div class="donation-option" data-value="70">
-            <div class="donation-value">R$ 70</div>
-          </div>
-          <div class="donation-option" data-value="100">
-            <div class="donation-value">R$ 100</div>
-          </div>
-          <div class="donation-option" data-value="150">
-            <div class="donation-value">R$ 150</div>
-          </div>
-          <div class="donation-option" data-value="200">
-            <div class="donation-value">R$ 200</div>
-          </div>
-          <div class="donation-option" data-value="300">
-            <div class="donation-value">R$ 300</div>
-          </div>
-          <div class="donation-option" data-value="500">
-            <div class="donation-value">R$ 500</div>
-          </div>
-          <div class="donation-option" data-value="1000">
-            <div class="donation-value">R$ 1.000</div>
-          </div>
-        </div>
-
-        <div class="custom-value">
-          <div class="custom-value-label">Outro valor:</div>
-          <input
-            type="number"
-            id="customValue"
-            placeholder="Digite outro valor (R$)"
-            min="10"
-          />
-        </div>
-
-        <button class="proceed-button" id="proceedToDonate">CONTINUAR</button>
-
-        <div class="modal-footer">Pagamento 100% seguro</div>
-      </div>
-    </div>
-
-    <script>
-      // Simple tab functionality
-      document.addEventListener("DOMContentLoaded", function () {
-        const tabs = document.querySelectorAll(".tab");
-        const modal = document.getElementById("donationModal");
-        const donateButtons = document.querySelectorAll(
-          "#openDonateModal, #openDonateModal2, #openDonateModal3"
-        );
-        const closeModal = document.querySelector(".close-modal");
-        const donationOptions = document.querySelectorAll(".donation-option");
-        const customValue = document.getElementById("customValue");
-        const proceedButton = document.getElementById("proceedToDonate");
-
-        let selectedValue = 0;
-
-        tabs.forEach((tab) => {
-          tab.addEventListener("click", () => {
-            tabs.forEach((t) => t.classList.remove("active"));
-            tab.classList.add("active");
-          });
-        });
-
-        // Open modal
-        donateButtons.forEach((button) => {
-          button.addEventListener("click", function () {
-            modal.style.display = "block";
-          });
-        });
-
-        // Close modal
-        closeModal.addEventListener("click", function () {
-          modal.style.display = "none";
-        });
-
-        // When clicking outside the modal
-        window.addEventListener("click", function (event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        });
-
-        // Select donation value
-        donationOptions.forEach((option) => {
-          option.addEventListener("click", function () {
-            donationOptions.forEach((opt) => opt.classList.remove("selected"));
-            this.classList.add("selected");
-            selectedValue = this.getAttribute("data-value");
-            customValue.value = "";
-          });
-        });
-
-        // Remover toda a máscara e validar apenas no momento do envio
-        customValue.addEventListener("input", function () {
-          // Filtrar apenas dígitos
-          this.value = this.value.replace(/[^0-9]/g, "");
-
-          // Se tiver algum valor
-          if (this.value) {
-            // Atualizar a variável global com o valor digitado
-            selectedValue = parseInt(this.value);
-
-            // Remover seleção de qualquer opção
-            donationOptions.forEach((opt) => opt.classList.remove("selected"));
-          } else {
-            selectedValue = 0;
-          }
-        });
-
-        // Garantir que o campo começa com o prefixo ao receber foco
-        customValue.addEventListener("focus", function () {
-          if (!this.value || this.value === "") {
-            this.value = "R$ ";
-          }
-        });
-
-        // Proceed to payment
-        proceedButton.addEventListener("click", function () {
-          // Extrair apenas os números do valor selecionado (caso seja uma string formatada)
-          let numericValue = selectedValue;
-          if (typeof selectedValue === "string") {
-            numericValue = parseInt(selectedValue.replace(/\D/g, ""));
-          }
-
-          // Verificar se o valor é menor que 30
-          if (numericValue > 0 && numericValue < 30) {
-            alert("O valor mínimo para doação é de R$ 30,00");
-            // Define o valor para 30
-            selectedValue = 30;
-
-            // Atualiza o campo de input se ele estiver sendo usado
-            if (customValue.value) {
-              customValue.value = "R$ 30";
-            }
-
-            // Desmarca qualquer opção selecionada
-            donationOptions.forEach((opt) => opt.classList.remove("selected"));
-
-            // Destaca a opção de R$30 se existir
-            const option30 = document.querySelector(
-              '.donation-option[data-value="30"]'
-            );
-            if (option30) {
-              option30.classList.add("selected");
-            }
-
-            // Retorna sem redirecionar
-            return;
-          }
-
-          if (numericValue > 0) {
-            // Salvar o valor selecionado em localStorage para uso posterior
-            localStorage.setItem("donationValue", numericValue);
-
-            // Converter o valor para centavos antes de redirecionar
-            const valueInCents = numericValue * 100;
-
-            // Capturar todos os parâmetros UTM e outros parâmetros da URL atual
-            const currentUrl = window.location.search;
-            const urlParams = new URLSearchParams(currentUrl);
-
-            // Criar uma nova URL para a página de pagamento com o valor em centavos
-            let redirectUrl = `pagamento/index.html?valor=${valueInCents}`;
-
-            // Adicionar todos os parâmetros UTM e outros parâmetros à URL de redirecionamento
-            urlParams.forEach((value, key) => {
-              // Não adicionar o parâmetro 'valor' novamente caso já exista
-              if (key !== "valor") {
-                redirectUrl += `&${key}=${value}`;
-              }
-            });
-
-            // Redirecionar para a página de pagamento com todos os parâmetros
-            window.location.href = redirectUrl;
-          } else {
-            alert("Por favor, escolha ou digite um valor para doar.");
-          }
-        });
-
-        // Prevent back navigation
-        history.pushState(null, null, location.href);
-        window.addEventListener("popstate", function () {
-          history.pushState(null, null, location.href);
-        });
-      });
-    </script>
   </body>
 </html>
